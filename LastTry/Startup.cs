@@ -8,6 +8,7 @@ using LastTry.Domain.Repositories;
 using LastTry.Domain.Services;
 using LastTry.Persistence.Contexts;
 using LastTry.Persistence.Repositories;
+using AutoMapper;
 using LastTry.Services;
 
 namespace LastTry
@@ -28,9 +29,14 @@ namespace LastTry
             services.AddDbContext<AppDbContext>(options => {
                 options.UseInMemoryDatabase("supermarket-api-in-memory");
             });
-
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
+
+            services.AddAutoMapper();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -50,7 +56,7 @@ namespace LastTry
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
             
         }
